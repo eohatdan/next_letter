@@ -1,0 +1,623 @@
+﻿ChatGPT: The programmer/hobbyist's amazing assistant
+
+
+I’m a retired software developer who still loves programming and learning new technologies.  My usual workflow for exploring new technologies is to start a project and search online for answers when I get stuck.  This often requires doing background reading using my O’Reilly online account and some of their instructional videos.  Even more often, one technology involves another that is new to me, and so on, so it is easy to get bogged down.
+
+
+I’ve recently found a new approach that takes much of the frustration and hard work out of the workflow.  I simply ask ChatGPT to write a sample application involving the new technology and study its production.  If I still don’t get it, I ask ChatGPT to explain it.  The amazing thing is that it can do all this and do it in a very smooth, professional way that works!
+
+
+For those who haven’t heard about ChatGPT, here’s a quick description and links for trying it out yourself.  I’ve also copied some transcripts of my “conversations” so you can see the results of some of our collaborations.
+
+
+Using ChatGPT has put much of the joy back into being a programmer/hobbyist -- at least, it has for me.  
+________________
+Example 1: Writing a desktop app to convert from one liquid measure to another.
+
+
+Instructions to ChatGPT:
+
+
+Write a Python program with the following specifications:   A desktop program using Tkinter.  Inputs: a key-value pair.  The name of a JSON file.  Outputs: a JSON file with the same name with the key-value pair as a dictionary entry.  If a JSON file with the specified name doesn't exist, create one with that name.  Continue accepting dictionary entries as input until the word 'exit' is entered.
+
+
+ChatGPT response:
+Here's a Python program using Tkinter that meets the given specifications:
+
+
+import tkinter as tk
+import json
+
+
+def add_to_json():
+    key = key_entry.get()
+    value = value_entry.get()
+
+
+    try:
+        with open(file_entry.get(), 'r') as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        data = {}
+
+
+    if key and value:
+        data[key] = value
+
+
+    with open(file_entry.get(), 'w') as file:
+        json.dump(data, file)
+
+
+    key_entry.delete(0, tk.END)
+    value_entry.delete(0, tk.END)
+
+
+def exit_program():
+    root.destroy()
+
+
+root = tk.Tk()
+root.title("JSON Editor")
+
+
+file_label = tk.Label(root, text="JSON file name:")
+file_label.grid(row=0, column=0)
+
+
+file_entry = tk.Entry(root)
+file_entry.grid(row=0, column=1)
+
+
+key_label = tk.Label(root, text="Key:")
+key_label.grid(row=1, column=0)
+
+
+key_entry = tk.Entry(root)
+key_entry.grid(row=1, column=1)
+
+
+value_label = tk.Label(root, text="Value:")
+value_label.grid(row=2, column=0)
+
+
+value_entry = tk.Entry(root)
+value_entry.grid(row=2, column=1)
+
+
+add_button = tk.Button(root, text="Add to JSON", command=add_to_json)
+add_button.grid(row=3, column=0, columnspan=2)
+
+
+exit_button = tk.Button(root, text="Exit", command=exit_program)
+exit_button.grid(row=4, column=0, columnspan=2)
+
+
+root.mainloop()
+
+
+This program creates a GUI window using Tkinter that includes three text input fields (for the JSON file name, key, and value), as well as two buttons (one to add the key-value pair to the JSON file, and one to exit the program).
+When the "Add to JSON" button is clicked, the program retrieves the user's input from the three input fields, tries to open the specified JSON file (creating it if it doesn't exist), and loads the file's contents into a Python dictionary. The program then adds the key-value pair to the dictionary (if both the key and value fields are non-empty), writes the updated dictionary back to the JSON file, and clears the key and value input fields.
+The program will continue to accept new key-value pairs until the user enters "exit" in the key field. At this point, the program can be exited using the "Exit" button.
+________________
+
+
+Re-write giving 'json' as the file name extension to the file.
+Sure! Here's the modified version of the program that includes ".json" as the file extension:
+import tkinter as tk
+import json
+
+
+def add_to_json():
+    key = key_entry.get()
+    value = value_entry.get()
+
+
+    try:
+        with open(file_entry.get() + ".json", 'r') as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        data = {}
+
+
+    if key and value:
+        data[key] = value
+
+
+    with open(file_entry.get() + ".json", 'w') as file:
+        json.dump(data, file)
+
+
+    key_entry.delete(0, tk.END)
+    value_entry.delete(0, tk.END)
+
+
+def exit_program():
+    root.destroy()
+
+
+root = tk.Tk()
+root.title("JSON Editor")
+
+
+file_label = tk.Label(root, text="JSON file name:")
+file_label.grid(row=0, column=0)
+
+
+file_entry = tk.Entry(root)
+file_entry.grid(row=0, column=1)
+
+
+key_label = tk.Label(root, text="Key:")
+key_label.grid(row=1, column=0)
+
+
+key_entry = tk.Entry(root)
+key_entry.grid(row=1, column=1)
+
+
+value_label = tk.Label(root, text="Value:")
+value_label.grid(row=2, column=0)
+
+
+value_entry = tk.Entry(root)
+value_entry.grid(row=2, column=1)
+
+
+add_button = tk.Button(root, text="Add to JSON", command=add_to_json)
+add_button.grid(row=3, column=0, columnspan=2)
+
+
+exit_button = tk.Button(root, text="Exit", command=exit_program)
+exit_button.grid(row=4, column=0, columnspan=2)
+
+
+root.mainloop()
+________________
+
+
+The program worked as instructed, producing this result:
+  
+
+________________
+
+
+The next step was to write a desktop app to create a json file editor that can create and update a dictionary of liquid measure units with their associated values referenced to the base unit of liters.
+For example, 1 gallon = 3.78541 liters ({‘gallons’: 3.78541})
+The liquid_measure_converter app will then be modified to load the dictionary from the json file instead of hard-coding the dictionary, as shown in the original liquid_measure_converter app.
+Here are the instructions given to ChatGPT to write the json file editor:
+Write a Python program with the following specifications:   A desktop program using Tkinter.  Inputs: a key-value pair.  The name of a JSON file.  Outputs: a JSON file with the same name with the key-value pair as a dictionary entry.  If a JSON file with the specified name doesn't exist, create one with that name.  Continue accepting dictionary entries as input until the word 'exit' is entered.
+________________
+import tkinter as tk
+import json
+
+
+def add_to_json():
+    key = key_entry.get()
+    value = value_entry.get()
+
+
+    try:
+        with open(file_entry.get(), 'r') as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        data = {}
+
+
+    if key and value:
+        data[key] = value
+
+
+    with open(file_entry.get(), 'w') as file:
+        json.dump(data, file)
+
+
+    key_entry.delete(0, tk.END)
+    value_entry.delete(0, tk.END)
+
+
+def exit_program():
+    root.destroy()
+
+
+root = tk.Tk()
+root.title("JSON Editor")
+
+
+file_label = tk.Label(root, text="JSON file name:")
+file_label.grid(row=0, column=0)
+
+
+file_entry = tk.Entry(root)
+file_entry.grid(row=0, column=1)
+
+
+key_label = tk.Label(root, text="Key:")
+key_label.grid(row=1, column=0)
+
+
+key_entry = tk.Entry(root)
+key_entry.grid(row=1, column=1)
+
+
+value_label = tk.Label(root, text="Value:")
+value_label.grid(row=2, column=0)
+
+
+value_entry = tk.Entry(root)
+value_entry.grid(row=2, column=1)
+
+
+add_button = tk.Button(root, text="Add to JSON", command=add_to_json)
+add_button.grid(row=3, column=0, columnspan=2)
+
+
+exit_button = tk.Button(root, text="Exit", command=exit_program)
+exit_button.grid(row=4, column=0, columnspan=2)
+
+
+root.mainloop()
+
+
+
+
+
+
+________________
+
+
+The app almost worked as requested, but the json file extension wasn’t written, so here is the instruction to correct that:
+
+
+re-write giving 'json' as the file name extension to the file.
+
+
+The resulting program added the json file extension, but still didn’t work properly.  I modified the code manually to produce the final version shown below:
+
+
+________________
+
+
+import tkinter as tk
+import json
+
+
+def add_to_json():
+    key = key_entry.get()
+    value = float(value_entry.get())
+
+
+    try:
+        with open(file_entry.get() + ".json") as file:
+            print(file_entry.get() + ".json")
+            data = json.load(file)
+            print(type(data),data)
+            print(type(data['gallons']),data['gallons'])
+    except FileNotFoundError:
+        data = {}
+
+
+    if key and value:
+        data.update({key:value})
+        #data[key] = value
+        print("data: ",data)
+
+
+    with open(file_entry.get() + ".json", 'w') as file:
+        json.dump(data, file)
+
+
+    key_entry.delete(0, tk.END)
+    value_entry.delete(0, tk.END)
+
+
+def exit_program():
+    root.destroy()
+
+
+root = tk.Tk()
+root.title("JSON Editor")
+
+
+file_label = tk.Label(root, text="JSON file name:")
+file_label.grid(row=0, column=0)
+
+
+file_entry = tk.Entry(root)
+file_entry.grid(row=0, column=1)
+
+
+key_label = tk.Label(root, text="Key:")
+key_label.grid(row=1, column=0)
+
+
+key_entry = tk.Entry(root)
+key_entry.grid(row=1, column=1)
+
+
+value_label = tk.Label(root, text="Value:")
+value_label.grid(row=2, column=0)
+
+
+value_entry = tk.Entry(root)
+value_entry.grid(row=2, column=1)
+
+
+add_button = tk.Button(root, text="Add to JSON", command=add_to_json)
+add_button.grid(row=3, column=0, columnspan=2)
+
+
+exit_button = tk.Button(root, text="Exit", command=exit_program)
+exit_button.grid(row=4, column=0, columnspan=2)
+
+
+root.mainloop()
+
+
+After tweaking the code a bit I got it right and it works now producing this result:
+
+
+  
+
+
+
+The app will update the dictionary in the example shown to create or replace the dictionary entry for gallons with the floating point value of 3.78541.
+________________
+Example 2: A Wordle Helper
+
+
+I do the NY Times Wordle puzzle almost every morning and usually get the right answer in about four attempts.  Over time I’ve noticed a kind of pattern in the answers, so I started keeping a Google Sheets spreadsheet on the answers, the number of attempts for me, and the number of attempts by an AI Wordle program.
+
+
+I decided I would like a Wordle helper that uses letter frequencies to assist me in making attempts to find the answers.  The data used in the letter frequencies would be downloaded from the Google Sheets spreadsheet in a comma-separted-variable (CSV) format.  
+
+
+I wanted the Helper to be available as a web page that I could host from my Awardspace.com account, so the code should be a combination of HTML and JavaScript.
+
+
+Here is the initial prompt that I gave ChatGPT:
+
+
+There is a csv file named Wordle.csv in the c:/danin/documents folder.  The first row of the file is a header.  The second column (column B) contains a list of words.  Some rows contain a null value in the second column.  Write an html application that uses javascript to list the frequency of use of the first letter of the column in descending order.  Also list the last letter of words that are paired with the first letter.
+
+
+Here is the initial response from ChatGPT:
+
+
+To create an HTML application that processes a CSV file and lists the frequency of the first letters of words in descending order, along with the last letters of words that are paired with each first letter, you'll need a combination of HTML, JavaScript, and possibly a server-side language if you're dealing with local files. Since JavaScript running in the browser cannot directly access files on a user's computer for security reasons, I'll describe a solution that assumes the CSV file is uploaded by the user.
+Here's a breakdown of the steps:
+* HTML to Upload File: Create an HTML form to let the user upload the CSV file.
+* JavaScript to Read and Process File: Use JavaScript to read the CSV file, parse its contents, and compute the frequencies and letter pairings.
+* Display Results: Show the results on the webpage.
+HTML
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>Word Frequency Analysis</title>
+</head>
+<body>
+ <h2>Upload Wordle CSV File</h2>
+ <input type="file" id="fileInput">
+ <button onclick="processFile()">Process</button>
+ <div id="output"></div>
+
+
+ <script src="script.js"></script>
+</body>
+</html>
+
+
+JavaScript (script.js)
+javascript
+Copy code
+function processFile() {
+ const fileInput = document.getElementById('fileInput');
+ const file = fileInput.files[0];
+
+
+ if (file) {
+ const reader = new FileReader();
+ reader.onload = function(event) {
+ const content = event.target.result;
+ const lines = content.split(/\r\n|\n/);
+ const frequency = {};
+ const lastLetters = {};
+
+
+ // Start from index 1 to skip header
+ for (let i = 1; i < lines.length; i++) {
+ const columns = lines[i].split(',');
+ const word = columns[1];
+ 
+ if (word) {
+ const firstLetter = word[0].toLowerCase();
+ const lastLetter = word[word.length - 1].toLowerCase();
+
+
+ frequency[firstLetter] = (frequency[firstLetter] || 0) + 1;
+ lastLetters[firstLetter] = lastLetters[firstLetter] || new Set();
+ lastLetters[firstLetter].add(lastLetter);
+ }
+ }
+
+
+ displayResults(frequency, lastLetters);
+ };
+ reader.readAsText(file);
+ }
+}
+
+
+function displayResults(frequency, lastLetters) {
+ const outputDiv = document.getElementById('output');
+ outputDiv.innerHTML = '';
+
+
+ const sortedLetters = Object.keys(frequency).sort((a, b) => frequency[b] - frequency[a]);
+
+
+ sortedLetters.forEach(letter => {
+ const lastLetterList = Array.from(lastLetters[letter]).join(', ');
+ outputDiv.innerHTML += `<p>Letter "${letter.toUpperCase()}": ${frequency[letter]} times (Last letters: ${lastLetterList})</p>`;
+ });
+}
+
+
+Instructions for Use
+* Save the HTML code in an index.html file and the JavaScript in a script.js file in the same directory.
+* Open index.html in a web browser.
+* Use the file input to select and upload the Wordle.csv file.
+* Click the "Process" button to see the results.
+Notes
+* The JavaScript code assumes that the CSV file uses commas as delimiters and that there are no commas within the data fields.
+* If the CSV file is more complex (e.g., fields containing commas or quotes), you might need a more robust CSV parsing approach.
+* Security: This code runs in the browser and doesn't upload the file to a server, so it's more secure and privacy-friendly.
+* For local file access without user uploading, you would need a server-side language like Node.js, PHP, or Python, or a desktop application framework.
+
+
+The results of the first try were exactly what I had requested.  However, as is often the case with software clients, I immediately thought of other neat things that would help me solve the Wordle puzzles.  The first of these was next-letter frequencies.  That is, I wanted to be able to click on a letter shown in the letter frequency list and be shown the frequency distribution of next letters based on the data downloaded as a CSV file from previous answers given in the NY Times version of Wordle.
+
+
+Here is the prompt I gave for this addition to the program:
+
+
+Add a feature to the application: For each first letter list the frequency of the next letter in descending sequence.  Example: For the first letter S, show that T as a next letter occurs 10 times and H occurs 8 times.  Indent the statistics for the next letter to make the output more readable.
+
+
+Here is the response:
+
+
+To add this feature, you need to modify the JavaScript code to track the frequency of the next letter after the first letter of each word. Here's an updated version of the script.js that includes this functionality:
+Updated JavaScript (script.js)
+javascript
+Copy code
+function processFile() {
+ const fileInput = document.getElementById('fileInput');
+ const file = fileInput.files[0];
+
+
+ if (file) {
+ const reader = new FileReader();
+ reader.onload = function(event) {
+ const content = event.target.result;
+ const lines = content.split(/\r\n|\n/);
+ const frequency = {};
+ const lastLetters = {};
+ const nextLetterFrequency = {};
+
+
+ // Start from index 1 to skip header
+ for (let i = 1; i < lines.length; i++) {
+ const columns = lines[i].split(',');
+ const word = columns[1];
+ 
+ if (word && word.length > 1) {
+ const firstLetter = word[0].toLowerCase();
+ const nextLetter = word[1].toLowerCase();
+ const lastLetter = word[word.length - 1].toLowerCase();
+
+
+ frequency[firstLetter] = (frequency[firstLetter] || 0) + 1;
+ lastLetters[firstLetter] = lastLetters[firstLetter] || new Set();
+ lastLetters[firstLetter].add(lastLetter);
+
+
+ if (!nextLetterFrequency[firstLetter]) {
+ nextLetterFrequency[firstLetter] = {};
+ }
+ nextLetterFrequency[firstLetter][nextLetter] = (nextLetterFrequency[firstLetter][nextLetter] || 0) + 1;
+ }
+ }
+
+
+ displayResults(frequency, lastLetters, nextLetterFrequency);
+ };
+ reader.readAsText(file);
+ }
+}
+
+
+function displayResults(frequency, lastLetters, nextLetterFrequency) {
+ const outputDiv = document.getElementById('output');
+ outputDiv.innerHTML = '';
+
+
+ const sortedLetters = Object.keys(frequency).sort((a, b) => frequency[b] - frequency[a]);
+
+
+ sortedLetters.forEach(letter => {
+ const lastLetterList = Array.from(lastLetters[letter]).join(', ');
+ outputDiv.innerHTML += `<p>Letter "${letter.toUpperCase()}": ${frequency[letter]} times (Last letters: ${lastLetterList})</p>`;
+
+
+ if (nextLetterFrequency[letter]) {
+ const sortedNextLetters = Object.keys(nextLetterFrequency[letter]).sort((a, b) => nextLetterFrequency[letter][b] - nextLetterFrequency[letter][a]);
+ outputDiv.innerHTML += `<div style="margin-left: 20px;">`;
+ sortedNextLetters.forEach(nextLetter => {
+ outputDiv.innerHTML += `<p>Next letter "${nextLetter.toUpperCase()}": ${nextLetterFrequency[letter][nextLetter]} times</p>`;
+ });
+ outputDiv.innerHTML += `</div>`;
+ }
+ });
+}
+
+
+How It Works
+* The nextLetterFrequency object stores the frequencies of the next letters for each first letter.
+* For each word processed, if the word length is greater than 1, it calculates the frequency of the next letter following the first letter.
+* In the displayResults function, after displaying the frequency of the first letter and the last letters, it also displays the frequencies of the next letters in a nested format, indented for readability.
+Usage
+Follow the same steps as before to use this updated application. The output will now include the frequency of the next letter for each first letter in a nicely formatted, indented list.
+________________
+
+
+After many iterations of the prompt for additional features/ChatGPT responses, I ended up with a more elaborate program that not only shows next letter frequencies from the Wordle answer CSV file, but also a database of some 6700 common 5-letter words that I got from Kagel.  In addition, there is a feature that computes the conditional probability distribution of the next letter given a string of letters of arbitrary length.
+
+
+Here’s some screensnaps from the use of the latest HTML/JavaScript web page:
+
+
+  
+
+
+
+
+This tells me that based on the Wordel answers CSV file, the letter S occurs 57 times as the first letter.
+________________
+TTt   
+ 
+This tells me that the next letters used after S as the initial letter are H, O, R,  A, and I, with H being the most frequent (used 8 times) and I being the least frequent, with only 1 usage.
+________________
+Now, I switch datasets and use the larger 5-letter word dataset:
+
+
+  
+
+
+
+It’s interesting that the letter S is also the most frequently used first letter in the much larger dataset.
+________________
+Again, I want to see the distribution of next letters if S is chosen as the first letter:
+
+
+  
+
+
+
+Now I see that in the larger dataset, T has taken over the number 1 position, having been used 65 times as the next letter following S, and that H is the next most frequently used letter, with 52 usages after the letter S.
+
+
+Switching gears a bit, I will now show how the conditional probability feature works.  I will ask for the frequency distribution of the next letter following the string ST.
+
+
+  
+
+
+
+This shows that the letter A has the highest probability of being the next letter used after the string ST.  I will now use the string STA and see what the likely next letters are.
+  
+
+This shows that, given the string STA, the next most likely letters are I, L, and R, all with the same probability of 0.1579.
